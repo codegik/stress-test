@@ -87,7 +87,7 @@ check_container_runtime() {
 start_container_services() {
     print_status "Starting container services using $CONTAINER_RUNTIME..."
 
-    if $COMPOSE_COMMAND up -d; then
+    if $COMPOSE_COMMAND up --build -d; then
         print_success "$CONTAINER_RUNTIME services started successfully"
     else
         print_error "Failed to start $CONTAINER_RUNTIME services"
