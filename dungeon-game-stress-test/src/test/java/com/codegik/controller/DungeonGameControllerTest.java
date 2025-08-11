@@ -226,3 +226,4 @@ class DungeonGameControllerTest {
         assertEquals(400, response.statusCode());
     }
 }
+
