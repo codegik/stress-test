@@ -28,7 +28,7 @@ public class DungeonGameController {
     public ResponseEntity<DungeonResponse> calculateMinimumHP(@Valid @RequestBody DungeonRequest request) {
         try {
             DungeonResult result = dungeonGameService.calculateAndSave(request.getDungeon());
-            DungeonResponse response = new DungeonResponse(result.getResult(), "Success - Result saved to database");
+            DungeonResponse response = new DungeonResponse(result.getResult(), "Success");
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             DungeonResponse errorResponse = new DungeonResponse(0, "Error: " + e.getMessage());

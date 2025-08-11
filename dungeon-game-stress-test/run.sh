@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # Colors for output
 RED='\033[0;31m'
@@ -82,26 +82,6 @@ check_container_runtime() {
     esac
 }
 
-# Function to wait for PostgreSQL to be ready
-wait_for_postgres() {
-    print_status "Waiting for PostgreSQL to be ready..."
-    local max_attempts=30
-    local attempt=1
-
-    while [ $attempt -le $max_attempts ]; do
-        if $COMPOSE_COMMAND exec -T postgres pg_isready -U postgres -d dungeon_game > /dev/null 2>&1; then
-            print_success "PostgreSQL is ready!"
-            return 0
-        fi
-
-        print_status "Attempt $attempt/$max_attempts - PostgreSQL not ready yet, waiting..."
-        sleep 2
-        ((attempt++))
-    done
-
-    print_error "PostgreSQL failed to start within expected time"
-    return 1
-}
 
 # Function to start container services
 start_container_services() {
@@ -115,41 +95,15 @@ start_container_services() {
     fi
 }
 
-# Function to build the application
-build_application() {
-    print_status "Building the application..."
-
-    if ./mvnw clean compile; then
-        print_success "Application built successfully"
-    else
-        print_error "Failed to build application"
-        exit 1
-    fi
-}
-
 # Function to run tests
 run_tests() {
     print_status "Running tests..."
 
-    if ./mvnw test; then
+    if ./mvnw clean install; then
         print_success "All tests passed"
     else
         print_warning "Some tests failed, but continuing to start the application"
     fi
-}
-
-# Function to start the Spring Boot application
-start_application() {
-    print_status "Starting the Dungeon Game application..."
-    print_status "Container runtime: $CONTAINER_RUNTIME"
-    print_status "Application will be available at: http://localhost:8080"
-    print_status "Health check: http://localhost:8080/api/dungeon/health"
-    print_status ""
-    print_status "Press Ctrl+C to stop the application"
-    print_status ""
-
-    # Run the application
-    ./mvnw spring-boot:run
 }
 
 # Function to cleanup on exit
@@ -167,27 +121,13 @@ cleanup() {
     print_success "Cleanup completed"
 }
 
-# Trap Ctrl+C and call cleanup
-trap cleanup EXIT
-
 # Main execution
 print_status "Starting Dungeon Game Stress Test Application"
 print_status "============================================="
 
 # Check prerequisites and detect container runtime
 check_container_runtime
-
-# Start container services
-start_container_services
-
-# Wait for PostgreSQL to be ready
-wait_for_postgres
-
-# Build application
-build_application
-
 # Run tests
 run_tests
-
-# Start the application
-start_application
+# Start container services (this will start both postgres and the application)
+start_container_services

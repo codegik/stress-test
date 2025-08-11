@@ -69,7 +69,7 @@ class DungeonGameControllerTest {
         assertEquals(200, response.statusCode());
         JsonNode jsonResponse = objectMapper.readTree(response.body());
         assertEquals(4, jsonResponse.get("result").asInt());
-        assertEquals("Success - Result saved to database", jsonResponse.get("message").asText());
+        assertEquals("Success", jsonResponse.get("message").asText());
     }
 
     @Test
@@ -89,7 +89,7 @@ class DungeonGameControllerTest {
         assertEquals(200, response.statusCode());
         JsonNode jsonResponse = objectMapper.readTree(response.body());
         assertEquals(5, jsonResponse.get("result").asInt());
-        assertEquals("Success - Result saved to database", jsonResponse.get("message").asText());
+        assertEquals("Success", jsonResponse.get("message").asText());
     }
 
     @Test
@@ -109,7 +109,7 @@ class DungeonGameControllerTest {
         assertEquals(200, response.statusCode());
         JsonNode jsonResponse = objectMapper.readTree(response.body());
         assertEquals(6, jsonResponse.get("result").asInt());
-        assertEquals("Success - Result saved to database", jsonResponse.get("message").asText());
+        assertEquals("Success", jsonResponse.get("message").asText());
     }
 
     @Test

@@ -6,12 +6,16 @@ services:
       POSTGRES_DB: dungeon_game
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: password
-      POSTGRES_INITDB_ARGS: "--encoding=UTF-8 --lc-collate=C --lc-ctype=C"
     ports:
       - "5432:5432"
     volumes:
       - ./src/main/resources/schema.sql:/docker-entrypoint-initdb.d/schema.sql
-    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d dungeon_game"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
 
   dungeon-app:
     build:
@@ -27,4 +31,3 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
-    restart: unless-stopped
