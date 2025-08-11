@@ -28,7 +28,7 @@ public class DungeonGameController {
     public ResponseEntity<DungeonResponse> calculateMinimumHP(@Valid @RequestBody DungeonRequest request) {
         try {
             DungeonResult result = dungeonGameService.calculateAndSave(request.getDungeon());
-            DungeonResponse response = new DungeonResponse(result.getMinimumHP(), "Success - Result saved to database");
+            DungeonResponse response = new DungeonResponse(result.getResult(), "Success - Result saved to database");
             return ResponseEntity.ok(response);
         } catch (Exception e) {
             DungeonResponse errorResponse = new DungeonResponse(0, "Error: " + e.getMessage());
@@ -56,16 +56,16 @@ public class DungeonGameController {
         return ResponseEntity.ok(results);
     }
 
-    @GetMapping("/results/minimum-hp/{hp}")
-    public ResponseEntity<List<DungeonResult>> getResultsByMinimumHP(@PathVariable Integer hp) {
-        List<DungeonResult> results = dungeonGameService.getResultsByMinimumHP(hp);
+    @GetMapping("/results/result/{result}")
+    public ResponseEntity<List<DungeonResult>> getResultsByResult(@PathVariable Integer result) {
+        List<DungeonResult> results = dungeonGameService.getResultsByResult(result);
         return ResponseEntity.ok(results);
     }
 
     @GetMapping("/stats/average/{rows}/{columns}")
-    public ResponseEntity<Double> getAverageMinimumHP(
+    public ResponseEntity<Double> getAverageResult(
             @PathVariable Integer rows, @PathVariable Integer columns) {
-        Double average = dungeonGameService.getAverageMinimumHP(rows, columns);
+        Double average = dungeonGameService.getAverageResult(rows, columns);
         return ResponseEntity.ok(average);
     }
 

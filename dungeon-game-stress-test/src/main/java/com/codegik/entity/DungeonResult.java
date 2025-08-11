@@ -15,8 +15,8 @@ public class DungeonResult {
     @Column("dungeon_data")
     private String dungeonData;
 
-    @Column("minimum_hp")
-    private Integer minimumHP;
+    @Column("result")
+    private Integer result;
 
     @Column("rows")
     private Integer rows;
@@ -31,10 +31,10 @@ public class DungeonResult {
         this.createdAt = LocalDateTime.now();
     }
 
-    public DungeonResult(String dungeonData, Integer minimumHP, Integer rows, Integer columns) {
+    public DungeonResult(String dungeonData, Integer result, Integer rows, Integer columns) {
         this();
         this.dungeonData = dungeonData;
-        this.minimumHP = minimumHP;
+        this.result = result;
         this.rows = rows;
         this.columns = columns;
     }
@@ -55,12 +55,12 @@ public class DungeonResult {
         this.dungeonData = dungeonData;
     }
 
-    public Integer getMinimumHP() {
-        return minimumHP;
+    public Integer getResult() {
+        return result;
     }
 
-    public void setMinimumHP(Integer minimumHP) {
-        this.minimumHP = minimumHP;
+    public void setResult(Integer result) {
+        this.result = result;
     }
 
     public Integer getRows() {

@@ -8,7 +8,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -28,21 +27,17 @@ public class DungeonGameService {
 
     public DungeonResult calculateAndSave(int[][] dungeon) {
         try {
-            // Calculate minimum HP
-            int minimumHP = dungeonGame.calculateMinimumHP(dungeon);
-
-            // Convert dungeon array to JSON string for storage
+            int result = dungeonGame.calculateMinimumHP(dungeon);
             String dungeonData = objectMapper.writeValueAsString(dungeon);
 
-            // Create and save result
-            DungeonResult result = new DungeonResult(
+            DungeonResult dungeonResult = new DungeonResult(
                 dungeonData,
-                minimumHP,
+                result,
                 dungeon.length,
                 dungeon[0].length
             );
 
-            return repository.save(result);
+            return repository.save(dungeonResult);
         } catch (JsonProcessingException e) {
             throw new RuntimeException("Failed to serialize dungeon data", e);
         }
@@ -60,16 +55,12 @@ public class DungeonGameService {
         return repository.findByRowsAndColumns(rows, columns);
     }
 
-    public List<DungeonResult> getResultsByMinimumHP(int minimumHP) {
-        return repository.findByMinimumHP(minimumHP);
+    public List<DungeonResult> getResultsByResult(int result) {
+        return repository.findByResult(result);
     }
 
-    public List<DungeonResult> getResultsBetweenDates(LocalDateTime start, LocalDateTime end) {
-        return repository.findByCreatedAtBetween(start, end);
-    }
-
-    public Double getAverageMinimumHP(int rows, int columns) {
-        return repository.findAverageMinimumHPByDimensions(rows, columns);
+    public Double getAverageResult(int rows, int columns) {
+        return repository.findAverageResultByDimensions(rows, columns);
     }
 
     public long getTotalResultsCount() {

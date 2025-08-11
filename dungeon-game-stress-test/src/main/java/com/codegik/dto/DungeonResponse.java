@@ -2,23 +2,23 @@ package com.codegik.dto;
 
 public class DungeonResponse {
 
-    private int minimumHP;
+    private int result;
     private String message;
 
     public DungeonResponse() {
     }
 
-    public DungeonResponse(int minimumHP, String message) {
-        this.minimumHP = minimumHP;
+    public DungeonResponse(int result, String message) {
+        this.result = result;
         this.message = message;
     }
 
-    public int getMinimumHP() {
-        return minimumHP;
+    public int getResult() {
+        return result;
     }
 
-    public void setMinimumHP(int minimumHP) {
-        this.minimumHP = minimumHP;
+    public void setResult(int result) {
+        this.result = result;
     }
 
     public String getMessage() {
