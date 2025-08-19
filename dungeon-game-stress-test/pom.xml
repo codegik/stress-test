@@ -96,9 +96,9 @@
 				<groupId>io.gatling</groupId>
 				<artifactId>gatling-maven-plugin</artifactId>
 				<version>${gatling-maven-plugin.version}</version>
-				<configuration>
-					<simulationClass>com.codegik.stress.DungeonGameStressTest</simulationClass>
-				</configuration>
+<!--				<configuration>-->
+<!--					<simulationClass>com.codegik.stress.DungeonGameStressTest</simulationClass>-->
+<!--				</configuration>-->
 			</plugin>
 		</plugins>
 	</build>
