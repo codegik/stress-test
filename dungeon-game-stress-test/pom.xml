@@ -11,24 +11,9 @@
 	<groupId>com.codegik</groupId>
 	<artifactId>dungeon-game-stress-test</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>demo</name>
-	<description>Demo project for Spring Boot</description>
-	<url/>
-	<licenses>
-		<license/>
-	</licenses>
-	<developers>
-		<developer/>
-	</developers>
-	<scm>
-		<connection/>
-		<developerConnection/>
-		<tag/>
-		<url/>
-	</scm>
 	<properties>
 		<java.version>23</java.version>
-		<gatling.version>3.9.5</gatling.version>
+		<gatling.version>3.13.5</gatling.version>
 		<gatling-maven-plugin.version>4.3.7</gatling-maven-plugin.version>
 	</properties>
 	<dependencies>
@@ -96,9 +81,25 @@
 				<groupId>io.gatling</groupId>
 				<artifactId>gatling-maven-plugin</artifactId>
 				<version>${gatling-maven-plugin.version}</version>
-<!--				<configuration>-->
-<!--					<simulationClass>com.codegik.stress.DungeonGameStressTest</simulationClass>-->
-<!--				</configuration>-->
+				<configuration>
+					<resultsFolder>${gatling.results.folder}</resultsFolder>
+					<jvmArgs>
+						<jvmArg>--add-opens</jvmArg>
+						<jvmArg>java.base/java.lang=ALL-UNNAMED</jvmArg>
+						<jvmArg>--add-opens</jvmArg>
+						<jvmArg>java.base/java.util=ALL-UNNAMED</jvmArg>
+						<jvmArg>--add-opens</jvmArg>
+						<jvmArg>java.base/java.nio=ALL-UNNAMED</jvmArg>
+						<jvmArg>--add-opens</jvmArg>
+						<jvmArg>java.base/java.io=ALL-UNNAMED</jvmArg>
+						<jvmArg>--add-opens</jvmArg>
+						<jvmArg>java.base/java.net=ALL-UNNAMED</jvmArg>
+						<jvmArg>--add-opens</jvmArg>
+						<jvmArg>java.base/java.time=ALL-UNNAMED</jvmArg>
+						<jvmArg>--add-opens</jvmArg>
+						<jvmArg>java.base/sun.nio.ch=ALL-UNNAMED</jvmArg>
+					</jvmArgs>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>

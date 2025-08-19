@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 # Colors for output
 RED='\033[0;31m'
 GREEN='\033[0;32m'
@@ -102,23 +104,9 @@ run_tests() {
     if ./mvnw clean install; then
         print_success "All tests passed"
     else
-        print_warning "Some tests failed, but continuing to start the application"
+        print_error "Some tests failed"
+        exit 2
     fi
-}
-
-# Function to cleanup on exit
-cleanup() {
-    print_status "Shutting down..."
-    print_status "Stopping container services..."
-
-    if [ -n "$COMPOSE_COMMAND" ]; then
-        $COMPOSE_COMMAND down
-    else
-        print_warning "Unknown container runtime, attempting docker compose cleanup..."
-        docker compose down 2>/dev/null || true
-    fi
-
-    print_success "Cleanup completed"
 }
 
 # Main execution

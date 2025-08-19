@@ -31,3 +31,51 @@ services:
     depends_on:
       postgres:
         condition: service_healthy
+
+  gatling-node-1:
+    build:
+      context: .
+      dockerfile: Gatling.Dockerfile
+    volumes:
+      - ./logs/node1:/opt/gatling/results
+    environment:
+      - NODE_ID=1
+      - TOTAL_NODES=3
+      - TOTAL_USERS=100
+      - TEST_DURATION=120
+      - BASE_URL=http://dungeon-app:8080
+      - SIMULATION_CLASS=com.codegik.stress.DungeonGameStressTest
+    depends_on:
+      - dungeon-app
+
+  gatling-node-2:
+    build:
+      context: .
+      dockerfile: Gatling.Dockerfile
+    volumes:
+      - ./logs/node2:/opt/gatling/results
+    environment:
+      - NODE_ID=2
+      - TOTAL_NODES=3
+      - TOTAL_USERS=100
+      - TEST_DURATION=120
+      - BASE_URL=http://dungeon-app:8080
+      - SIMULATION_CLASS=com.codegik.stress.DungeonGameStressTest
+    depends_on:
+      - dungeon-app
+
+  gatling-node-3:
+    build:
+      context: .
+      dockerfile: Gatling.Dockerfile
+    volumes:
+      - ./logs/node3:/opt/gatling/results
+    environment:
+      - NODE_ID=3
+      - TOTAL_NODES=3
+      - TOTAL_USERS=100
+      - TEST_DURATION=120
+      - BASE_URL=http://dungeon-app:8080
+      - SIMULATION_CLASS=com.codegik.stress.DungeonGameStressTest
+    depends_on:
+      - dungeon-app
