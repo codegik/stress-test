@@ -62,17 +62,28 @@ print_status "All nodes completed! Consolidating results..."
 # Check if simulation logs exist before merging
 if ls ./logs/node*/*/simulation.log 1> /dev/null 2>&1; then
     print_status "Found simulation logs, merging..."
-    mkdir -p ./logs/consolidated
-    cat ./logs/node*/*/simulation.log > ./logs/consolidated/simulation.log
-    print_success "Simulation logs merged successfully"
+    mkdir -p ./target/gatling/consolidated
 
-    # Generate consolidated report
-    print_status "Generating consolidated report..."
-    docker run --rm \
-      -v $(pwd)/logs/consolidated:/opt/gatling/results \
-      denvazh/gatling:latest \
-      -ro /opt/gatling/results
-    print_success "Consolidated report generated"
+    cat ./logs/node*/*/simulation.log > ./target/gatling/consolidated/simulation.log
+    print_success "Simulation logs merged into single file: ./target/gatling/consolidated/simulation.log"
+
+    print_status "Generating consolidated report using Gatling Maven plugin..."
+    ./mvnw gatling:test -Dgatling.reportsOnly=consolidated
+
+    if [ $? -eq 0 ]; then
+        # Find the generated report in the correct location
+        REPORT_FILE=$(find "./target/gatling" -name "index.html" -path "*/consolidated/*" | head -1)
+        if [[ -n "$REPORT_FILE" ]]; then
+            print_success "Consolidated Gatling report generated"
+            print_status "Report available at: $REPORT_FILE"
+            print_status "Open in browser: file://$(pwd)/$REPORT_FILE"
+        else
+            print_warning "Report may have been generated but index.html not found"
+            print_status "Check ./logs/consolidated/ for generated reports"
+        fi
+    else
+        print_error "Failed to generate consolidated report using Gatling Maven plugin"
+    fi
 else
     print_error "No simulation logs found in ./logs/node*/simulation.log"
     print_error "Check if the Gatling tests completed successfully and generated logs"

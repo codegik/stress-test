@@ -110,6 +110,7 @@ run_tests() {
 }
 
 # Main execution
+rm -rf ./logs >/dev/null 2>&1
 print_status "Starting Dungeon Game Stress Test Application"
 print_status "============================================="
 
